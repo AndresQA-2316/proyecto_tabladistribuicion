@@ -8,17 +8,24 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableModel;
 
 public class FrmTablaDistribucion extends JFrame {
 
     JComboBox cmbRespuesta;
     JList lstMuestra;
     String[] opciones = new String[] { "Excelente", "Buena", "Regular", "Mala" };
+    String[] encabezado = new String[]{"Variable", 
+    "Frecuencia absoluta (f)",
+    "Frecuencia acumulada (F)",
+    "Frecuencia relativa (fr)",
+    "Frecuencia porcentual (%f)"};
 
     public FrmTablaDistribucion() {
-        setSize(400, 300);
+        setSize(600, 500);
         setTitle("Tabla deDistribución");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
@@ -53,6 +60,16 @@ public class FrmTablaDistribucion extends JFrame {
         JButton btnTablaDistribucion = new JButton("Calcular");
         btnTablaDistribucion.setBounds(10, 200, 100, 25);
         getContentPane().add(btnTablaDistribucion);
+
+        //agregar tabla
+        JTable tblTablaDistribucion=new JTable();
+        JScrollPane spTablaDistribucion = new JScrollPane(tblTablaDistribucion);
+        spTablaDistribucion.setBounds(10,230,500,200);
+        getContentPane().add(spTablaDistribucion);
+
+        //Asignar los datos a la tabla
+        DefaultTableModel dtm = new DefaultTableModel(null, encabezado);
+        tblTablaDistribucion.setModel(dtm);
 
         // eventos de la GUI
         btnAgregar.addActionListener(new ActionListener() {
