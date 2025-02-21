@@ -23,6 +23,7 @@ public class FrmTablaDistribucion extends JFrame {
     "Frecuencia acumulada (F)",
     "Frecuencia relativa (fr)",
     "Frecuencia porcentual (%f)"};
+    JTable tblTablaDistribucion;
 
     public FrmTablaDistribucion() {
         setSize(600, 500);
@@ -62,7 +63,7 @@ public class FrmTablaDistribucion extends JFrame {
         getContentPane().add(btnTablaDistribucion);
 
         //agregar tabla
-        JTable tblTablaDistribucion=new JTable();
+        tblTablaDistribucion=new JTable();
         JScrollPane spTablaDistribucion = new JScrollPane(tblTablaDistribucion);
         spTablaDistribucion.setBounds(10,230,500,200);
         getContentPane().add(spTablaDistribucion);
@@ -128,6 +129,45 @@ public class FrmTablaDistribucion extends JFrame {
     }
 
     private void calcularTablaDistribucion(){
+        double[][] tablaDistribucion=new double[opciones.length][4];
+        for(int i=0; i<=totalDatos; i++){
+            //buscar la posicion de la variable
+            int posicion=-1;
+            for(int j=0; j<opciones.length;j++){
+                if (muestra[i].equals(opciones[j])) {
+                    posicion = j;
+                    break;
+                }
+            }
 
+            //incrementar la frecuencia absoluta
+            tablaDistribucion[posicion][0]++;
+        }
+        
+         //calcular frecuencia acumulada
+         tablaDistribucion[0][1]=tablaDistribucion[0][0];
+         for(int i = 1; i < opciones.length; i++){
+             tablaDistribucion[i][1]=tablaDistribucion[i-1][1]+tablaDistribucion[i][0];
+
+         }
+
+       // mostrar la tabla de frecuencias
+       String[][] strTablasDistribucion=new String[opciones.length][5];
+       for(int i=0;i<opciones.length;i++){
+
+        tablaDistribucion[i][2]=tablaDistribucion[i][0] / tablaDistribucion[opciones.length-1][1];
+        tablaDistribucion[i][3]=tablaDistribucion[i][2] * 100;
+
+           strTablasDistribucion[i][0]=opciones[i];
+           strTablasDistribucion[i][1]=String.valueOf(tablaDistribucion[i][0]);
+           strTablasDistribucion[i][2]=String.valueOf(tablaDistribucion[i][1]);
+           strTablasDistribucion[i][3]=String.valueOf(tablaDistribucion[i][2]);
+           strTablasDistribucion[i][4]=String.valueOf(tablaDistribucion[i][3]);
+       }
+
+       
+       //Asignar los datos a la tabla
+       DefaultTableModel dtm = new DefaultTableModel(strTablasDistribucion, encabezado);
+       tblTablaDistribucion.setModel(dtm);
     }
 }
